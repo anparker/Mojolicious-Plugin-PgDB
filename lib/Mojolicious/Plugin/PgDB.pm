@@ -72,7 +72,7 @@ Mojolicious::Plugin::PgDB - L<Mojo::Pg> with L<SQL::Abstract> flavour.
 
 =head1 SYNOPSIS
 
-  use Mojolicious::Lite'
+  use Mojolicious::Lite;
  
   plugin 'PgDB' => {
     pgstring => 'postgresql://user:pass@localhost/db1',
