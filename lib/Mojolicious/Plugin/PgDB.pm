@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 
 use Mojo::Pg;
 use Mojo::Pg::Abstract;
-use Module::Runtime 'require_module';
+use Mojo::Loader 'load_class';
 
 our $VERSION = '0.2';
 
@@ -30,7 +30,7 @@ sub register {
 		});
 
 	if ($conf->{debug}) {
-		require_module 'DBIx::QueryLog';
+		load_class 'DBIx::QueryLog';
 		DBIx::QueryLog->import();
 		DBIx::QueryLog->skip_bind(1);
 
