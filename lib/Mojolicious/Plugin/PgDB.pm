@@ -73,7 +73,7 @@ Mojolicious::Plugin::PgDB - L<Mojo::Pg> with L<SQL::Abstract> flavour.
 =head1 SYNOPSIS
 
   use Mojolicious::Lite;
- 
+
   plugin 'PgDB' => {
     pgstring => 'postgresql://user:pass@localhost/db1',
     dbiopts => {
@@ -125,7 +125,7 @@ app's debug log.
 Execute set of queries on every new DB handler. No checks for malicious insertions!
 
 =head2 pgstring
- 
+
   plugin PgDB => {pgstring => 'postgresql://user:pass@localhost/db1'};
 
 Connection string that will be passed to L<Mojo::Pg/new>. Peek at L<Mojo::Pg/from_string> for examples. Mandatory.
