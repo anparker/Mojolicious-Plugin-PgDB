@@ -6,7 +6,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
   NAME         => 'Mojolicious::Plugin::PgDB',
   VERSION_FROM => 'lib/Mojolicious/Plugin/PgDB.pm',
-  AUTHOR       => 'A Good Programmer <nospam@cpan.org>',
-  PREREQ_PM    => {'Mojolicious' => '6.40'},
+  AUTHOR       => 'Andre Parker <andreparker@gmail.com>',
+  PREREQ_PM    => {'Mojolicious' => '6.61'},
   test         => {TESTS => 't/*.t'}
 );
