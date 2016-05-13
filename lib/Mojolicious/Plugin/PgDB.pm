@@ -11,6 +11,8 @@ sub register {
 	my ($self, $app, $conf) = @_;
 	$conf ||= {};
 
+	push @{$app->commands->namespaces}, 'Mojolicious::Plugin::PgDB::Command';
+
 	$conf->{dbiopts}->{$_} //= 1
 		for (qw(AutoCommit AutoInactiveDestroy RaiseError));
 
