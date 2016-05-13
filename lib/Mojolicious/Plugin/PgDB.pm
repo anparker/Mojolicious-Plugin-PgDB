@@ -11,7 +11,6 @@ sub register {
 	my ($self, $app, $conf) = @_;
 	$conf ||= {};
 
-	die 'Missing connection string.' unless $conf->{pgstring};
 	$conf->{dbiopts}->{$_} //= 1
 		for (qw(AutoCommit AutoInactiveDestroy RaiseError));
 
