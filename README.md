@@ -33,3 +33,14 @@ duct tape.
 ```
 
 Look at embedded documentation for details and examples.
+
+### Migrations command
+
+```
+  # show currently active and latest available versions
+  ./app.pl migrations -a -l
+
+  # migrate to latest or selected version
+  ./app.pl migrations --migrate
+  ./app.pl migrations --migrate 2
+```
