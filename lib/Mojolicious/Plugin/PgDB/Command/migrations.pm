@@ -79,6 +79,8 @@ migrations.
 L<Mojolicious::Plugin::PgDB::Command::migrations> will migrate from
 C<active> to a different version. Check L<Mojo::Pg::Migrations> for details.
 
+=head1 CONFIG OPTIONS
+
 Migration data can be loaded from data section or file. Configuration will be
 loaded from C<migrations> section of app config.
 
@@ -98,8 +100,6 @@ or
       section => ['main', 'file_name']
     }
   }
-
-=head1 CONFIG OPTIONS
 
 =head2 data
 
