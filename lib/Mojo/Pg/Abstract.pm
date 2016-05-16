@@ -9,12 +9,12 @@ use SQL::Abstract::PgLimit;
 our $abstract = SQL::Abstract::PgLimit->new();
 
 sub import {
-	for my $method (qw(select insert update delete)) {
-		no strict 'refs';
-		*{"Mojo::Pg::Database::$method"} = sub {
-			shift->query($abstract->$method(@_));
-		}
-	}
+  for my $method (qw(select insert update delete)) {
+    no strict 'refs';
+    *{"Mojo::Pg::Database::$method"} = sub {
+      shift->query($abstract->$method(@_));
+      }
+  }
 }
 
 1;

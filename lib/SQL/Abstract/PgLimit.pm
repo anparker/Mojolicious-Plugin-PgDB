@@ -8,25 +8,27 @@ use utf8;
 use Carp 'carp';
 
 sub select {
-	my $self = shift;
-	my ($source, $fields, $where, $order, $limit, $offset) = @_;
+  my $self = shift;
+  my ($source, $fields, $where, $order, $limit, $offset) = @_;
 
-	carp 'Wrong argument for limit. Should be a positive number.' if $limit && $limit !~ /^\d+$/;
-	carp 'Wrong argument for offset. Should be a positive number.' if $offset && $offset !~ /^\d+$/;
+  carp 'Wrong argument for limit. Should be a positive number.'
+    if $limit && $limit !~ /^\d+$/;
+  carp 'Wrong argument for offset. Should be a positive number.'
+    if $offset && $offset !~ /^\d+$/;
 
-	my ($sql, @bind) = $self->SUPER::select($source, $fields, $where, $order);
+  my ($sql, @bind) = $self->SUPER::select($source, $fields, $where, $order);
 
-	if (defined $limit) {
-		$sql .= ' LIMIT ?';
-		push @bind, $limit;
-	}
+  if (defined $limit) {
+    $sql .= ' LIMIT ?';
+    push @bind, $limit;
+  }
 
-	if (defined $offset) {
-		$sql .= ' OFFSET ?';
-		push @bind, $offset;
-	}
+  if (defined $offset) {
+    $sql .= ' OFFSET ?';
+    push @bind, $offset;
+  }
 
-	return wantarray ? ($sql, @bind) : $sql;
+  return wantarray ? ($sql, @bind) : $sql;
 }
 
 1;

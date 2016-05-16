@@ -8,57 +8,71 @@ use Mojo::Loader 'load_class';
 our $VERSION = '0.2';
 
 sub register {
-	my ($self, $app, $conf) = @_;
-	$conf ||= {};
+  my ($self, $app, $conf) = @_;
+  $conf ||= {};
 
-	push @{$app->commands->namespaces}, 'Mojolicious::Plugin::PgDB::Command';
+  push @{$app->commands->namespaces}, 'Mojolicious::Plugin::PgDB::Command';
 
-	$conf->{dbiopts}->{$_} //= 1
-		for (qw(AutoCommit AutoInactiveDestroy RaiseError));
+  $conf->{dbiopts}->{$_} //= 1
+    for (qw(AutoCommit AutoInactiveDestroy RaiseError));
 
-	$app->attr(pg => sub { Mojo::Pg->new($conf->{pgstring})->options($conf->{dbiopts})->search_path($conf->{schema}) });
-	$app->helper(db => sub { shift->app->pg->db });
+  $app->attr(
+    pg => sub {
+      Mojo::Pg->new($conf->{pgstring})->options($conf->{dbiopts})
+        ->search_path($conf->{schema});
+    }
+  );
+  $app->helper(db => sub { shift->app->pg->db });
 
-	$app->pg->on(connection => sub {
-			# $pg, $dbh
+  $app->pg->on(
+    connection => sub {
 
-			# $_[1]->do('SET search_path TO ?, public', {}, $conf->{schema})
-			# 	if $conf->{schema};
+      # $pg, $dbh
 
-			if (ref $conf->{on_connect} eq 'ARRAY') {
-				$_[1]->do($_) for @{$conf->{on_connect}};
-			}
-		});
+      # $_[1]->do('SET search_path TO ?, public', {}, $conf->{schema})
+      # 	if $conf->{schema};
 
-	if ($conf->{debug}) {
-		load_class 'DBIx::QueryLog';
-		DBIx::QueryLog->import();
-		DBIx::QueryLog->skip_bind(1);
+      if (ref $conf->{on_connect} eq 'ARRAY') {
+        $_[1]->do($_) for @{$conf->{on_connect}};
+      }
+    }
+  );
 
-		my ($total_queries, $total_time) = (0, 0);
+  if ($conf->{debug}) {
+    load_class 'DBIx::QueryLog';
+    DBIx::QueryLog->import();
+    DBIx::QueryLog->skip_bind(1);
 
-		$DBIx::QueryLog::OUTPUT = sub {
-			my %p = @_;
+    my ($total_queries, $total_time) = (0, 0);
 
-			my $msg = "[DBI] Query: \"$p{sql}\"";
+    $DBIx::QueryLog::OUTPUT = sub {
+      my %p = @_;
 
-			if (@{$p{bind_params}}) {
-				$msg .= ' with params: ("'.join('", "', @{$p{bind_params}}).'")';
-			}
+      my $msg = "[DBI] Query: \"$p{sql}\"";
 
-			$msg .= " took: $p{time} sec.";
+      if (@{$p{bind_params}}) {
+        $msg .= ' with params: ("' . join('", "', @{$p{bind_params}}) . '")';
+      }
 
-			$app->log->debug($msg);
-			$total_queries++;
-			$total_time += $p{time};
-		};
+      $msg .= " took: $p{time} sec.";
 
-		$app->plugins->on(after_dispatch => sub {
-				shift->app->log->debug('Total queries: '.$total_queries.' over '.$total_time.' sec.');
-				$total_queries = $total_time = 0;
-		});
+      $app->log->debug($msg);
+      $total_queries++;
+      $total_time += $p{time};
+    };
 
-	}
+    $app->plugins->on(
+      after_dispatch => sub {
+        shift->app->log->debug('Total queries: '
+            . $total_queries
+            . ' over '
+            . $total_time
+            . ' sec.');
+        $total_queries = $total_time = 0;
+      }
+    );
+
+  }
 }
 
 1;
