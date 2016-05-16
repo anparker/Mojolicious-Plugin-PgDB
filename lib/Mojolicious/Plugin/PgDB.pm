@@ -30,7 +30,7 @@ sub register {
       # $pg, $dbh
 
       # $_[1]->do('SET search_path TO ?, public', {}, $conf->{schema})
-      # 	if $conf->{schema};
+      #   if $conf->{schema};
 
       if (ref $conf->{on_connect} eq 'ARRAY') {
         $_[1]->do($_) for @{$conf->{on_connect}};
@@ -63,11 +63,8 @@ sub register {
 
     $app->plugins->on(
       after_dispatch => sub {
-        shift->app->log->debug('Total queries: '
-            . $total_queries
-            . ' over '
-            . $total_time
-            . ' sec.');
+        shift->app->log->debug(
+          "Total queries: $total_queries over $total_time sec.");
         $total_queries = $total_time = 0;
       }
     );
