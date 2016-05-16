@@ -11,11 +11,6 @@ sub select {
   my $self = shift;
   my ($source, $fields, $where, $order, $limit, $offset) = @_;
 
-  carp 'Wrong argument for limit. Should be a positive number.'
-    if $limit && $limit !~ /^\d+$/;
-  carp 'Wrong argument for offset. Should be a positive number.'
-    if $offset && $offset !~ /^\d+$/;
-
   my ($sql, @bind) = $self->SUPER::select($source, $fields, $where, $order);
 
   if (defined $limit) {
