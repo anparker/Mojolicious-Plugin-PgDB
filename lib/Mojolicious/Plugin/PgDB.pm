@@ -2,7 +2,6 @@ package Mojolicious::Plugin::PgDB;
 use Mojo::Base 'Mojolicious::Plugin';
 
 use Mojo::Pg;
-use Mojo::Pg::Abstract;
 use Mojo::Loader 'load_class';
 
 our $VERSION = '0.2';
